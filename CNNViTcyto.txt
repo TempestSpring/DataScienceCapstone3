@@ -1,25 +1,14 @@
-CNN base model: 
+CNN base model:
+simplecnn_model = models.Sequential()
+simplecnn_model.add(layers.Conv2D(32,(3,3), activation='relu', input_shape=(64, 64, 1)))
+simplecnn_model.add(layers.Flatten())
+simplecnn_model.add(layers.Dense(32, activation='relu'))
+simplecnn_model.add(layers.Dense(2))
 
-  model = models.Sequential()
-  model.add(layers.Conv2D(32,(3,3), activation='relu', input_shape=(64, 64, 1)))
-  model.add(layers.MaxPooling2D((2,2)))
-  model.add(layers.Conv2D(64, (3,3), activation='relu'))
-  model.add(layers.MaxPooling2D((2,2)))
-  model.add(layers.Conv2D(128, (3,3), activation='relu'))
-  model.add(layers.Flatten())
-  model.add(layers.Dense(64, activation='relu'))
-  model.add(layers.Dense(2))
+simplecnn_model.compile(optimizer='adam', loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['val_accuracy'])
 
-  model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
-
-  history = model.fit(train_images, train_labels, epochs=10,
-                    validation_data=(test_images, test_labels), batch_size=20)
-
-Average performance for all 7 predictable cytokines - max validation score of about 0.72.
-
-Some evidence of over fitting. Needs tuning for each individual cytokine in follow up analysis.
+Performs well, check for over fitting in future work.
 
 
 ViT base model:
@@ -57,8 +46,7 @@ vit_model.trainable = False
   model.fit(train_images, train_labels, epochs=5,
                     validation_data=(test_images, test_labels), batch_size=30)
 
-This performs very poorly so far - needs more training data.
-
+This performs very poorly so far - pre-training does not fit test data type at all.
 
 
 
